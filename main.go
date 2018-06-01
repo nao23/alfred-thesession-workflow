@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"net/url"
 	"strings"
 	"github.com/deanishe/awgo"
 	"github.com/PuerkitoBio/goquery"
@@ -20,7 +21,9 @@ const BASE_URL   = "http://thesession.org"
 
 func search(target string, keyword string) {
 	// Request the HTML page.
-	res, err := http.Get(BASE_URL + "/" + target + "/search?q=" + keyword)
+	values := url.Values{}
+	values.Add("q", keyword)
+	res, err := http.Get(BASE_URL + "/" + target + "/search?" + values.Encode())
 	if err != nil {
 		log.Fatal(err)
 	}
