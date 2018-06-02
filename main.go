@@ -38,9 +38,9 @@ func search(target string, keyword string) {
 		log.Fatal(err)
 	}
 
-	doc.Find(".manifest-item").Each(func(i int, s *goquery.Selection) {
+	doc.Find("li.manifest-item").Each(func(i int, s *goquery.Selection) {
 		title := fmt.Sprintf("%d. ", i + 1)
-		href, _ := s.Find("a").First().Attr("href")
+		href, _ := s.Find("a.manifest-item-title").Attr("href")
 		href = BASE_URL + href
 		s.Find("a").Each(func(_ int, s *goquery.Selection) {
 			title += fmt.Sprintf("%s ", s.Text())
