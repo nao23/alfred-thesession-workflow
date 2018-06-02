@@ -19,7 +19,7 @@ var	(
 
 const BASE_URL   = "http://thesession.org"
 
-func search(target string, keyword string) {
+func GetHTML(target string, keyword string) *goquery.Document {
 	// Request the HTML page.
 	values := url.Values{}
 	values.Add("q", keyword)
@@ -31,13 +31,16 @@ func search(target string, keyword string) {
 	if res.StatusCode != 200 {
 		log.Fatalf("status code error: %d %s", res.StatusCode, res.Status)
 	}
-
 	// Load the HTML document
 	doc, err := goquery.NewDocumentFromReader(res.Body)
 	if err != nil {
 		log.Fatal(err)
 	}
+	return doc
+}
 
+func search(target string, keyword string) {
+	doc := GetHTML(target, keyword)
 	doc.Find("li.manifest-item").Each(func(i int, s *goquery.Selection) {
 		title := fmt.Sprintf("%d. ", i + 1)
 		href, _ := s.Find("a.manifest-item-title").Attr("href")
