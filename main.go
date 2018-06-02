@@ -54,7 +54,7 @@ func init() {
 }
 
 func run() {
-	allTargets := []string{"tunes"}
+	allTargets := []string{"tunes", "recordings"}
 
 	// Parse cmd-line arguments
 	target  := flag.String("target", "tunes", "search target")
