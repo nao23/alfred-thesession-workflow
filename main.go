@@ -42,13 +42,11 @@ func GetHTML(target string, keyword string) *goquery.Document {
 func search(target string, keyword string) {
 	doc := GetHTML(target, keyword)
 	doc.Find("li.manifest-item").Each(func(i int, s *goquery.Selection) {
-		title := fmt.Sprintf("%d. ", i + 1)
-		href, _ := s.Find("a.manifest-item-title").Attr("href")
+		titleAnchor := s.Find("a.manifest-item-title")
+		titleStr := fmt.Sprintf("%d. %s %s", i+1, titleAnchor.Text(), titleAnchor.Next().Text())
+		href, _ := titleAnchor.Attr("href")
 		href = BASE_URL + href
-		s.Find("a").Each(func(_ int, s *goquery.Selection) {
-			title += fmt.Sprintf("%s ", s.Text())
-		})
-		wf.NewItem(title).Subtitle(href).Arg(href).Valid(true)
+		wf.NewItem(titleStr).Subtitle(href).Arg(href).Valid(true)
 	})
 }
 
