@@ -61,12 +61,23 @@ func SearchRecordings(target string, keyword string) {
 	})
 }
 
+func SearchSessions(target string, keyword string) {
+	doc := GetHTML(target, keyword)
+	doc.Find("li.manifest-item:not(:has(del))").Each(func(i int, s *goquery.Selection) {
+		titleAnchor := s.Find("a.manifest-item-title")
+		titleStr := fmt.Sprintf("%d. %s", i+1, strings.Trim(titleAnchor.Parent().Text(), "\n"))
+		href, _ := titleAnchor.Attr("href")
+		href = BASE_URL + href
+		wf.NewItem(titleStr).Subtitle(href).Arg(href).Valid(true)
+	})
+}
+
 func init() {
 	wf = aw.New(aw.HelpURL(helpUrl), aw.MaxResults(maxResults))
 }
 
 func run() {
-	allTargets := []string{"tunes", "recordings"}
+	allTargets := []string{"tunes", "recordings", "sessions"}
 
 	// Parse cmd-line arguments
 	target  := flag.String("target", "tunes", "search target")
@@ -76,6 +87,7 @@ func run() {
 	switch *target {
 	case allTargets[0]: SearchTunes(*target, *keyword)
 	case allTargets[1]: SearchRecordings(*target, *keyword)
+	case allTargets[2]: SearchSessions(*target, *keyword)
 	default:
 	}
 

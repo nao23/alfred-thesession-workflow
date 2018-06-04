@@ -7,8 +7,9 @@ A workflow for Alfred 3.0 which let the user search for TheSession and have them
 
 ## Commands
 Below is a list of the commands that the workflow provides. Parameters in brackets are required.
-- **tunes (keyword)** Searches tunes matching the keyword
-- **recordings (keyword)** Searches recordings matching the keyword
+- **tunes (keyword)**: Searches tunes matching the keyword
+- **recordings (keyword)**: Searches recordings matching the keyword
+- **sessions (keyword)**: Searches sessions matching the keyword
 
 ## About
 This workflow is developed by [@nao23](https://github.com/nao23)
