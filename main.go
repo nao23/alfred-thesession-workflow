@@ -77,17 +77,15 @@ func init() {
 }
 
 func run() {
-	allTargets := []string{"tunes", "recordings", "sessions"}
-
 	// Parse cmd-line arguments
 	target  := flag.String("target", "tunes", "search target")
 	keyword := flag.String("keyword", "Kesh", "keyword")
 	flag.Parse()
 
 	switch *target {
-	case allTargets[0]: SearchTunes(*target, *keyword)
-	case allTargets[1]: SearchRecordings(*target, *keyword)
-	case allTargets[2]: SearchSessions(*target, *keyword)
+	case "tunes": SearchTunes(*target, *keyword)
+	case "recordings": SearchRecordings(*target, *keyword)
+	case "sessions": SearchSessions(*target, *keyword)
 	default:
 	}
 
