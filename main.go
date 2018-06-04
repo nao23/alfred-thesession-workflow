@@ -39,11 +39,22 @@ func GetHTML(target string, keyword string) *goquery.Document {
 	return doc
 }
 
-func search(target string, keyword string) {
+func SearchTunes(target string, keyword string) {
 	doc := GetHTML(target, keyword)
 	doc.Find("li.manifest-item").Each(func(i int, s *goquery.Selection) {
 		titleAnchor := s.Find("a.manifest-item-title")
 		titleStr := fmt.Sprintf("%d. %s %s", i+1, titleAnchor.Text(), titleAnchor.Next().Text())
+		href, _ := titleAnchor.Attr("href")
+		href = BASE_URL + href
+		wf.NewItem(titleStr).Subtitle(href).Arg(href).Valid(true)
+	})
+}
+
+func SearchRecordings(target string, keyword string) {
+	doc := GetHTML(target, keyword)
+	doc.Find("li.manifest-item").Each(func(i int, s *goquery.Selection) {
+		titleAnchor := s.Find("a.manifest-item-title")
+		titleStr := fmt.Sprintf("%d. %s by %s", i+1, titleAnchor.Text(), titleAnchor.Next().Text())
 		href, _ := titleAnchor.Attr("href")
 		href = BASE_URL + href
 		wf.NewItem(titleStr).Subtitle(href).Arg(href).Valid(true)
@@ -62,7 +73,11 @@ func run() {
 	keyword := flag.String("keyword", "Kesh", "keyword")
 	flag.Parse()
 
-	search(*target, *keyword)
+	switch *target {
+	case allTargets[0]: SearchTunes(*target, *keyword)
+	case allTargets[1]: SearchRecordings(*target, *keyword)
+	default:
+	}
 
 	wf.WarnEmpty("No matching target", "Try: " + strings.Join(allTargets, ","))
 	wf.SendFeedback()
