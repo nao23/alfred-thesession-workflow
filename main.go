@@ -13,7 +13,7 @@ import (
 
 var	(
 	wf         *aw.Workflow
-	helpUrl    = "http://www.deanishe.net"
+	helpURL    = "https://github.com/nao23/alfred-thesession-workflow"
 	maxResults = 10
 )
 
@@ -73,7 +73,7 @@ func SearchSessions(target string, keyword string) {
 }
 
 func init() {
-	wf = aw.New(aw.HelpURL(helpUrl), aw.MaxResults(maxResults))
+	wf = aw.New(aw.HelpURL(helpURL), aw.MaxResults(maxResults))
 }
 
 func run() {
