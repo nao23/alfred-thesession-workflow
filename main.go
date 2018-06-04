@@ -91,7 +91,7 @@ func run() {
 	default:
 	}
 
-	wf.WarnEmpty("No matching target", "Try: " + strings.Join(allTargets, ","))
+	wf.WarnEmpty("No matching " + *target, "Try a different keyword?")
 	wf.SendFeedback()
 }
 
