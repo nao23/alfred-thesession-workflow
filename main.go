@@ -19,7 +19,7 @@ var (
 
 const baseURL = "http://thesession.org"
 
-func GetHTML(target string, keyword string) *goquery.Document {
+func getHTML(target string, keyword string) *goquery.Document {
 	// Request the HTML page.
 	values := url.Values{}
 	values.Add("q", keyword)
@@ -39,8 +39,8 @@ func GetHTML(target string, keyword string) *goquery.Document {
 	return doc
 }
 
-func SearchTunes(target string, keyword string) {
-	doc := GetHTML(target, keyword)
+func searchTunes(target string, keyword string) {
+	doc := getHTML(target, keyword)
 	doc.Find("li.manifest-item").Each(func(i int, s *goquery.Selection) {
 		titleAnchor := s.Find("a.manifest-item-title")
 		titleStr := fmt.Sprintf("%d. %s %s", i+1, titleAnchor.Text(), titleAnchor.Next().Text())
@@ -50,8 +50,8 @@ func SearchTunes(target string, keyword string) {
 	})
 }
 
-func SearchRecordings(target string, keyword string) {
-	doc := GetHTML(target, keyword)
+func searchRecordings(target string, keyword string) {
+	doc := getHTML(target, keyword)
 	doc.Find("li.manifest-item").Each(func(i int, s *goquery.Selection) {
 		titleAnchor := s.Find("a.manifest-item-title")
 		titleStr := fmt.Sprintf("%d. %s by %s", i+1, titleAnchor.Text(), titleAnchor.Next().Text())
@@ -61,8 +61,8 @@ func SearchRecordings(target string, keyword string) {
 	})
 }
 
-func SearchSessions(target string, keyword string) {
-	doc := GetHTML(target, keyword)
+func searchSessions(target string, keyword string) {
+	doc := getHTML(target, keyword)
 	doc.Find("li.manifest-item:not(:has(del))").Each(func(i int, s *goquery.Selection) {
 		titleAnchor := s.Find("a.manifest-item-title")
 		titleStr := fmt.Sprintf("%d. %s", i+1, strings.Trim(titleAnchor.Parent().Text(), "\n"))
@@ -72,8 +72,8 @@ func SearchSessions(target string, keyword string) {
 	})
 }
 
-func SearchEvents(target string, keyword string) {
-	doc := GetHTML(target, keyword)
+func searchEvents(target string, keyword string) {
+	doc := getHTML(target, keyword)
 	doc.Find("li.manifest-item").Each(func(i int, s *goquery.Selection) {
 		titleAnchor := s.Find("a.manifest-item-title")
 		titleStr := fmt.Sprintf("%d. %s (%s)", i+1, titleAnchor.Text(), s.Find("time").Text())
@@ -83,8 +83,8 @@ func SearchEvents(target string, keyword string) {
 	})
 }
 
-func SearchDiscussions(target string, keyword string) {
-	doc := GetHTML(target, keyword)
+func searchDiscussions(target string, keyword string) {
+	doc := getHTML(target, keyword)
 	doc.Find("li.manifest-item").Each(func(i int, s *goquery.Selection) {
 		titleAnchor := s.Find("a.manifest-item-title")
 		titleStr := fmt.Sprintf("%d. %s %s", i+1, titleAnchor.Text(), s.Find("span.manifest-item-extra").Text())
@@ -92,10 +92,6 @@ func SearchDiscussions(target string, keyword string) {
 		href = baseURL + href
 		wf.NewItem(titleStr).Subtitle(href).Arg(href).Valid(true)
 	})
-}
-
-func init() {
-	wf = aw.New(aw.HelpURL(helpURL), aw.MaxResults(maxResults))
 }
 
 func run() {
@@ -106,20 +102,24 @@ func run() {
 
 	switch *target {
 	case "tunes":
-		SearchTunes(*target, *keyword)
+		searchTunes(*target, *keyword)
 	case "recordings":
-		SearchRecordings(*target, *keyword)
+		searchRecordings(*target, *keyword)
 	case "sessions":
-		SearchSessions(*target, *keyword)
+		searchSessions(*target, *keyword)
 	case "events":
-		SearchEvents(*target, *keyword)
+		searchEvents(*target, *keyword)
 	case "discussions":
-		SearchDiscussions(*target, *keyword)
+		searchDiscussions(*target, *keyword)
 	default:
 	}
 
 	wf.WarnEmpty("No matching "+(*target), "Try a different keyword?")
 	wf.SendFeedback()
+}
+
+func init() {
+	wf = aw.New(aw.HelpURL(helpURL), aw.MaxResults(maxResults))
 }
 
 func main() {
