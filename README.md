@@ -1,6 +1,8 @@
 # alfred-thesession-workflow
 A workflow for Alfred 3.0 which let the user search for [TheSession](https://thesession.org) and have them returned to Alfred.
 
+![demo](https://github.com/nao23/alfred-thesession-workflow/blob/master/demo.gif)
+
 ## Install
 1. [Download](https://raw.github.com/nao23/alfred-thesession-workflow/master/TheSession.alfredworkflow)
 2. Double-click to import into Alfred 3.0
