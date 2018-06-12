@@ -72,6 +72,17 @@ func SearchSessions(target string, keyword string) {
 	})
 }
 
+func SearchEvents(target string, keyword string) {
+	doc := GetHTML(target, keyword)
+	doc.Find("li.manifest-item").Each(func(i int, s *goquery.Selection) {
+		titleAnchor := s.Find("a.manifest-item-title")
+		titleStr := fmt.Sprintf("%d. %s (%s)", i+1, titleAnchor.Text(), s.Find("time").Text())
+		href, _ := titleAnchor.Attr("href")
+		href = baseURL + href
+		wf.NewItem(titleStr).Subtitle(href).Arg(href).Valid(true)
+	})
+}
+
 func SearchDiscussions(target string, keyword string) {
 	doc := GetHTML(target, keyword)
 	doc.Find("li.manifest-item").Each(func(i int, s *goquery.Selection) {
@@ -100,6 +111,8 @@ func run() {
 		SearchRecordings(*target, *keyword)
 	case "sessions":
 		SearchSessions(*target, *keyword)
+	case "events":
+		SearchEvents(*target, *keyword)
 	case "discussions":
 		SearchDiscussions(*target, *keyword)
 	default:
