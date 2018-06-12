@@ -10,6 +10,7 @@ Below is a list of the commands that the workflow provides. Parameters in bracke
 - **tunes (keyword)**: Searches tunes matching the keyword
 - **recordings (keyword)**: Searches recordings matching the keyword
 - **sessions (keyword)**: Searches sessions matching the keyword
+- **events (keyword)**: Searches events matching the keyword
 - **discussions (keyword)**: Searches discussions matching the keyword
 
 ## About
